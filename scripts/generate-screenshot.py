@@ -14,6 +14,7 @@ project_path = os.path.normpath('')
 images_path = os.path.join(project_path, 'images')
 data_path = os.path.join(project_path, 'data')
 post_file = os.path.join(data_path, 'post.html')
+img_template = os.path.join(project_path, 'template', 'template.png')
 # screenshot = os.path.join(images_path, 'screenshot.png')
 
 # get user input
