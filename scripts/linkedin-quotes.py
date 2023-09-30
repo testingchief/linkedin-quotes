@@ -15,22 +15,23 @@ log = logging.getLogger("linkedin-quotes")
 # get user input
 embed_code = sys.argv[1]
 if len(sys.argv) > 2:
-    img_id = sys.argv[2]
+    template_color = sys.argv[2]
 else:
-    img_id = ''
+    template_color = ''
 
 # set directory paths and file names
 project_path = os.path.normpath('')
 images_path = os.path.join(project_path, 'images')
 data_path = os.path.join(project_path, 'data')
+templates_path = os.path.join(project_path, 'templates')
 post_file = os.path.join(data_path, 'post.html')
-img_template = os.path.join(project_path, 'templates', 'template.png')
-img_user_icon = os.path.join(project_path, 'templates', 'img_user.jpeg')
-img_linkedin_logo = os.path.join(project_path, 'templates', 'linkedin_logo.png')
-img_quote = os.path.join(project_path, 'templates', 'quote.png')
-img_mask = os.path.join(project_path, 'templates', 'mask.png')
-img_name = 'post' + str(img_id) + '.png'
-img_file = os.path.join(project_path, 'images', img_name)
+img_template = os.path.join(templates_path, 'template' + template_color + '.png')
+img_user_icon = os.path.join(templates_path, 'img_user.jpeg')
+img_linkedin_logo = os.path.join(templates_path, 'linkedin_logo.png')
+img_quote = os.path.join(templates_path, 'quote.png')
+img_mask = os.path.join(templates_path, 'mask.png')
+img_name = 'post.png'
+img_file = os.path.join(images_path, img_name)
 log.info('Image file name set as %s', img_name)
 
 # read user input
@@ -117,7 +118,8 @@ content = content_html.text
 content_length = len(content)
 content_size = 1500
 log.info('Content fetched')
-log.info(content)
+# log.info(content)
+log.info('Content length: %s', content_length)
 
 if len(content) <= 100:
     font_size = 90
@@ -143,18 +145,6 @@ content_y = 350
 with Pilmoji(img) as pilmoji:
     pilmoji.text((200, 350), get_wrapped_text_nlfix(content.strip(), content_font, 900), (0,0,0), content_font)
 
-# add logo
-# logo = Image.open(img_linkedin_logo).resize((150,150))
-# logo_x = 960
-# logo_y = 960
-# img.paste(logo, (logo_x, logo_y), logo)
-
-# add quote
-# quote = Image.open(img_quote).resize((250,250))
-# quote_x = 100
-# quote_y = 100
-# img.paste(quote, (quote_x, quote_y), quote)
-
 
 # add testingchief
 brand_text = '@testingchief'
@@ -163,12 +153,7 @@ brand_font = ImageFont.truetype(font_ttf4, 15)
 brand_font_color = "grey"
 brand_x = 965
 brand_y = 1130
-
-if img_id == '':
-    draw_image.text((brand_x, brand_y), brand_text, font=brand_font, fill=brand_font_color)
-else:
-    draw_image.text((brand_x, brand_y), brand_text + ' (' + str(content_length) + ' chars)', font=brand_font, fill=brand_font_color)
-
+draw_image.text((brand_x, brand_y), brand_text, font=brand_font, fill=brand_font_color)
 
 # add created by
 creator_text = 'Created with linkedin-quotes'
@@ -177,7 +162,7 @@ brand_y = 1110
 draw_image.text((brand_x, brand_y), get_wrapped_text_nlfix(creator_text.strip(), brand_font, 200), font=brand_font, fill=brand_font_color)
 
 
-# add likes?
+# add likes & time?
 # TODO
 
 img.show()
