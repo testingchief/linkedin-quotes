@@ -4,6 +4,8 @@
 # linkedin-pikaso
 Get a clean and clutter-free screenshot of any LinkedIn post and share them on Social Media.
 
+![Auto Generated Image](https://github.com/testingchief/linkedin-pikaso/blob/main/images/post001.png?raw=true)
+
 ### What do you need?
 Get the URN from 'Embed this post' code in LinkedIn posts.
 Example: 
