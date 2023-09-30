@@ -3,4 +3,6 @@ html2image
 bs4
 logging
 pillow
+pilmoji
 olefile
+pytest
