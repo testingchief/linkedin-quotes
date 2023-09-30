@@ -1,0 +1,32 @@
+<iframe src="https://www.linkedin.com/embed/feed/update/urn:li:share:7108659246350639104" height="531" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+<iframe src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7107451783974645760" height="905" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+<iframe src="https://www.linkedin.com/embed/feed/update/urn:li:share:7112420626157510656" height="1084" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+<iframe src="https://www.linkedin.com/embed/feed/update/urn:li:share:7107345645132251138" height="738" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+
+
+
+linkedin icon <link rel="icon" href="https://static.licdn.com/aero-v1/sc/h/al2o9zrvru7aqj8e1x2rzsrca">
+
+user image <img class="inline-block relative
+          rounded-[50%]
+          w-6 h-6
+          " data-delayed-url="https://media.licdn.com/dms/image/C4D03AQGvNLyS2PNT0Q/profile-displayphoto-shrink_400_400/0/1516866096110?e=1701302400&amp;v=beta&amp;t=dNe9kxzmcMIcEiQWPETTmR4MmdN7Merntbd9gOqarog" data-ghost-classes="bg-color-entity-ghost-background" data-ghost-url="https://static.licdn.com/aero-v1/sc/h/9c8pery4andzj6ohjkjp54ma2" alt="View profile for Sivakumar Ganesan">
+		  
+user name <a class="text-sm link-styled no-underline leading-open" href="https://ca.linkedin.com/in/testingchief?trk=public_post_embed_feed-actor-name" target="_blank" 	data-tracking-control-name="public_post_embed_feed-actor-name" aria-label="View profile for Sivakumar Ganesan" data-tracking-will-navigate>
+              Sivakumar Ganesan
+            </a>
+			
+			
+user role <p class="!text-xs text-color-text-low-emphasis leading-[1.33333] m-0 truncate">
+<!---->                Sr. QE Manager at CIBC
+            </p>
+			
+			
+post content <p class="attributed-text-segment-list__content text-color-text !text-sm whitespace-pre-wrap break-words
+        " dir="ltr" data-test-id="main-feed-activity-embed-card__commentary">
+		
+
+
+
+https://media.licdn.com/dms/image/C4D03AQGvNLyS2PNT0Q/profile-displayphoto-shrink_400_400/0/1516866096110?e=1701302400&v=beta&t=dNe9kxzmcMIcEiQWPETTmR4MmdN7Merntbd9gOqarog
+https://media.licdn.com/dms/image/C4D03AQGvNLyS2PNT0Q/profile-displayphoto-shrink_400_400/0/1516866096110?e=1701302400&v=beta&t=dNe9kxzmcMIcEiQWPETTmR4MmdN7Merntbd9gOqarog

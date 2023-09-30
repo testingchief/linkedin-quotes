@@ -1,0 +1,174 @@
+import requests
+import logging
+from html2image import Html2Image
+from bs4 import BeautifulSoup as bs
+from PIL import Image, ImageFont, ImageDraw, ImageOps
+from pilmoji import Pilmoji
+import os
+import sys
+
+# enable logging
+logging.basicConfig()
+logging.getLogger().setLevel(logging.INFO)
+log = logging.getLogger("linkedin-pikaso")
+
+# get user input
+embed_code = sys.argv[1]
+if len(sys.argv) > 2:
+    img_id = sys.argv[2]
+else:
+    img_id = '  '
+
+# set directory paths and file names
+project_path = os.path.normpath('')
+images_path = os.path.join(project_path, 'images')
+data_path = os.path.join(project_path, 'data')
+post_file = os.path.join(data_path, 'post.html')
+img_template = os.path.join(project_path, 'template', 'template.png')
+img_user_icon = os.path.join(project_path, 'template', 'img_user.jpeg')
+img_linkedin_logo = os.path.join(project_path, 'template', 'linkedin_logo.png')
+img_quote = os.path.join(project_path, 'template', 'quote.png')
+img_mask = os.path.join(project_path, 'template', 'mask.png')
+img_name = 'post' + str(img_id) + '.png'
+img_file = os.path.join(project_path, 'images', img_name)
+log.info('Image file name set as %s', img_name)
+
+# read user input
+soup = bs(embed_code, 'html.parser')
+iFrame = soup.find(title='Embedded post')
+post_src = iFrame['src']
+# post_height = int(iFrame['height'])
+# post_width = int(iFrame['width'])
+post_height = 1200
+post_width = 1200
+
+# get post content and write to HTML
+response = requests.get(post_src, allow_redirects=True )
+open(post_file, 'wb').write(response.content)
+log.info('Response retrived from LinkedIn.')
+
+# get required content from HTML
+# get user image
+html_soup = bs(response.content, 'html.parser')
+user_img_html = html_soup.find("img", class_='inline-block')
+user_img_url = user_img_html['data-delayed-url']
+log.info(user_img_url)
+with open(img_user_icon, 'wb') as f:
+    f.write(requests.get(user_img_url, timeout=5).content)
+log.info('User image retrieved')
+
+# create image and add content
+input_color = 'white'
+img = Image.new(mode="RGBA", size=(post_height, post_height), color=input_color)
+
+# add user image
+mask = Image.open(img_mask).convert('L')
+user_pict = Image.open(img_user_icon).resize((200,200))
+user_pict_x = 100
+user_pict_y = 900
+img_file_output = ImageOps.fit(user_pict, mask.size, centering=(0.5,0.5))
+img_file_output.putalpha(mask)
+img.paste(img_file_output, (user_pict_x, user_pict_y),img_file_output )
+
+# draw text
+draw_image = ImageDraw.Draw(img)
+
+
+# reusable method to get wrapped text
+def get_wrapped_text(text: str, font: ImageFont.ImageFont,
+                     line_length: int):
+    lines = ['']
+    for word in text.split():
+        line = f'{lines[-1]} {word}'.strip()
+        if font.getlength(line) <= line_length:
+            lines[-1] = line
+        else:
+            lines.append(word)
+    return '\n'.join(lines)
+
+# reusable method to get wrapped text with line break
+def get_wrapped_text_nlfix(text: str, font: ImageFont.ImageFont, line_length: int): 
+    return "\n".join([get_wrapped_text(line, font, line_length) for line in text.splitlines()])
+
+# add user name
+user_name_html = html_soup.find("a", class_='text-sm')
+user_name_text = user_name_html.text
+font_ttf = os.path.join(data_path, 'BebasNeue-Regular.ttf')
+user_name_font = ImageFont.truetype(font_ttf, 70)
+user_name_font_color = "black"
+user_name_x = 225
+user_name_y = 900
+draw_image.text((user_name_x, user_name_y), user_name_text, font=user_name_font, fill=user_name_font_color)
+
+# add user role
+user_role_html = html_soup.find("p", class_='!text-xs')
+user_role_text = user_role_html.text
+
+if len(user_role_text) > 72:
+    user_role_text = user_role_text[:72] + '...'
+
+font_ttf2 = os.path.join(data_path, 'Roboto-Light.ttf')
+user_role_font = ImageFont.truetype(font_ttf2, 30)
+user_role_font_color = "grey"
+user_role_x = 380
+user_role_y = 1040
+draw_image.text((user_role_x, user_role_y), get_wrapped_text(user_role_text, user_role_font, 500), font=user_role_font, fill=user_role_font_color)
+
+# add content
+content_html = html_soup.find("p", class_='attributed-text-segment-list__content')
+content = content_html.text
+log.info('Content fetched')
+log.info(content)
+
+if len(content) <= 100:
+    font_size = 90
+elif len(content) > 100 and len(content) <200:
+    font_size = 60
+elif len(content) >= 200 and len(content) <300:
+    font_size = 35
+elif len(content) >= 300 and len(content) <1000:
+    font_size = 25
+else:
+    font_size = 15
+
+
+font_ttf3 = os.path.join(data_path, 'Gontserrat-Light.ttf')
+content_font = ImageFont.truetype(font_ttf3, font_size)
+content_font_color = "black"
+content_x = 200
+content_y = 350
+
+with Pilmoji(img) as pilmoji:
+    pilmoji.text((200, 350), get_wrapped_text_nlfix(content.strip(), content_font, 900), (0,0,0), content_font)
+
+# add logo
+logo = Image.open(img_linkedin_logo).resize((150,150))
+logo_x = 960
+logo_y = 960
+img.paste(logo, (logo_x, logo_y), logo)
+
+# add quote
+quote = Image.open(img_quote).resize((250,250))
+quote_x = 100
+quote_y = 100
+img.paste(quote, (quote_x, quote_y), quote)
+
+# add testingchief
+brand_text = '@testingchief'
+font_ttf4 = os.path.join(data_path, 'Roboto-Light.ttf')
+brand_font = ImageFont.truetype(font_ttf4, 15)
+brand_font_color = "grey"
+brand_x = 980
+brand_y = 1125
+
+if img_id == '':
+    draw_image.text((brand_x, brand_y), brand_text, font=brand_font, fill=brand_font_color)
+else:
+    draw_image.text((brand_x, brand_y), brand_text + ' (' + str(len(content)) + ' chars)', font=brand_font, fill=brand_font_color)
+
+
+# add likes?
+# TODO
+
+img.show()
+img.save(img_file)
