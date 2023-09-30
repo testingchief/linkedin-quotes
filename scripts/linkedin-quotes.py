@@ -165,5 +165,5 @@ draw_image.text((brand_x, brand_y), get_wrapped_text_nlfix(creator_text.strip(),
 # add likes & time?
 # TODO
 
-img.show()
 img.save(img_file)
+# img.show()
