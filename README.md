@@ -10,7 +10,9 @@ Get a clean screenshot of any LinkedIn post to share them on Social Media.
 Get the URN from 'Embed this post' code in LinkedIn posts.
 Example:
 ```
-<iframe src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7107451783974645760" height="904" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+<iframe src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7107451783974645760" 
+        height="904" width="504" frameborder="0" 
+        allowfullscreen="" title="Embedded post"></iframe>
 ``` 
 Required URN code is urn:li:ugcPost:7107451783974645760
 
