@@ -3,15 +3,21 @@ import logging
 from html2image import Html2Image
 from bs4 import BeautifulSoup as bs
 from PIL import Image, ImageFont, ImageDraw, ImageOps
-from io import BytesIO
-import shutil
+from pilmoji import Pilmoji
 import os
 import sys
 
 # enable logging
 logging.basicConfig()
-logging.getLogger().setLevel(logging.DEBUG)
+logging.getLogger().setLevel(logging.INFO)
 log = logging.getLogger("linkedin-pikaso")
+
+# get user input
+embed_code = sys.argv[1]
+if len(sys.argv) > 2:
+    img_id = sys.argv[2]
+else:
+    img_id = '  '
 
 # set directory paths and file names
 project_path = os.path.normpath('')
@@ -23,12 +29,11 @@ img_user_icon = os.path.join(project_path, 'template', 'img_user.jpeg')
 img_linkedin_logo = os.path.join(project_path, 'template', 'linkedin_logo.png')
 img_quote = os.path.join(project_path, 'template', 'quote.png')
 img_mask = os.path.join(project_path, 'template', 'mask.png')
-img_file = os.path.join(project_path, 'images', 'post.png')
+img_name = 'post' + str(img_id) + '.png'
+img_file = os.path.join(project_path, 'images', img_name)
+log.info('Image file name set as %s', img_name)
 
-# get user input
-# embed_code = sys.argv[1]
-embed_code = '<iframe src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7107451783974645760" height="905" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>'
-# embed_code = '<iframe src="https://www.linkedin.com/embed/feed/update/urn:li:share:7108659246350639104" height="531" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>'
+# read user input
 soup = bs(embed_code, 'html.parser')
 iFrame = soup.find(title='Embedded post')
 post_src = iFrame['src']
@@ -50,6 +55,7 @@ user_img_url = user_img_html['data-delayed-url']
 log.info(user_img_url)
 with open(img_user_icon, 'wb') as f:
     f.write(requests.get(user_img_url, timeout=5).content)
+log.info('User image retrieved')
 
 # create image and add content
 input_color = 'white'
@@ -80,6 +86,9 @@ def get_wrapped_text(text: str, font: ImageFont.ImageFont,
             lines.append(word)
     return '\n'.join(lines)
 
+# reusable method to get wrapped text with line break
+def get_wrapped_text_nlfix(text: str, font: ImageFont.ImageFont, line_length: int): 
+    return "\n".join([get_wrapped_text(line, font, line_length) for line in text.splitlines()])
 
 # add user name
 user_name_html = html_soup.find("a", class_='text-sm')
@@ -108,20 +117,29 @@ draw_image.text((user_role_x, user_role_y), get_wrapped_text(user_role_text, use
 # add content
 content_html = html_soup.find("p", class_='attributed-text-segment-list__content')
 content = content_html.text
+log.info('Content fetched')
+log.info(content)
 
-if len(content) > 150:
-    font_size = 30
-elif len(content) > 100:
-    font_size = 50
+if len(content) <= 100:
+    font_size = 90
+elif len(content) > 100 and len(content) <200:
+    font_size = 60
+elif len(content) >= 200 and len(content) <300:
+    font_size = 35
+elif len(content) >= 300 and len(content) <1000:
+    font_size = 25
 else:
-    font_size = 70
+    font_size = 15
 
-font_ttf3 = os.path.join(data_path, 'AltoneTrial-Regular.ttf')
+
+font_ttf3 = os.path.join(data_path, 'Gontserrat-Light.ttf')
 content_font = ImageFont.truetype(font_ttf3, font_size)
 content_font_color = "black"
 content_x = 200
 content_y = 350
-draw_image.text((content_x, content_y), get_wrapped_text(content,content_font,800), font=content_font, fill=content_font_color)
+
+with Pilmoji(img) as pilmoji:
+    pilmoji.text((200, 350), get_wrapped_text_nlfix(content.strip(), content_font, 900), (0,0,0), content_font)
 
 # add logo
 logo = Image.open(img_linkedin_logo).resize((150,150))
@@ -136,11 +154,21 @@ quote_y = 100
 img.paste(quote, (quote_x, quote_y), quote)
 
 # add testingchief
+brand_text = '@testingchief'
+font_ttf4 = os.path.join(data_path, 'Roboto-Light.ttf')
+brand_font = ImageFont.truetype(font_ttf4, 15)
+brand_font_color = "grey"
+brand_x = 980
+brand_y = 1125
 
-
+if img_id == '':
+    draw_image.text((brand_x, brand_y), brand_text, font=brand_font, fill=brand_font_color)
+else:
+    draw_image.text((brand_x, brand_y), brand_text + ' (' + str(len(content)) + ' chars)', font=brand_font, fill=brand_font_color)
 
 
 # add likes?
+# TODO
 
 img.show()
 img.save(img_file)
