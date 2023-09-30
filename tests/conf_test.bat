@@ -1,8 +1,8 @@
-py .\scripts\generate-screenshot.py "<iframe src='https://www.linkedin.com/embed/feed/update/urn:li:share:7112420626157510656' height='1084' width='504' frameborder='0' allowfullscreen='' title='Embedded post'></iframe>" "001"
-py .\scripts\generate-screenshot.py "<iframe src='https://www.linkedin.com/embed/feed/update/urn:li:share:7107345645132251138' height='undefined' width='504' frameborder='0' allowfullscreen='' title='Embedded post'></iframe>" "002"
-py .\scripts\generate-screenshot.py "<iframe src='https://www.linkedin.com/embed/feed/update/urn:li:share:7105527122726699008' height='979' width='504' frameborder='0' allowfullscreen='' title='Embedded post'></iframe>" "003"
-py .\scripts\generate-screenshot.py "<iframe src='https://www.linkedin.com/embed/feed/update/urn:li:share:6966754218011504640' height='601' width='504' frameborder='0' allowfullscreen='' title='Embedded post'></iframe>" "004"
-py .\scripts\generate-screenshot.py "<iframe src='https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7107451783974645760' height='905' width='504' frameborder='0' allowfullscreen='' title='Embedded post'></iframe>" "005"
-py .\scripts\generate-screenshot.py "<iframe src='https://www.linkedin.com/embed/feed/update/urn:li:share:7108659246350639104' height='531' width='504' frameborder='0' allowfullscreen='' title='Embedded post'></iframe>" "006"
-py .\scripts\generate-screenshot.py "<iframe src='https://www.linkedin.com/embed/feed/update/urn:li:share:7110123670982860801' height='undefined' width='504' frameborder='0' allowfullscreen='' title='Embedded post'></iframe>" "007"
-pause
+py .\scripts\linkedin-quotes.py "urn:li:share:7112420626157510656" "001" 
+py .\scripts\linkedin-quotes.py "urn:li:share:7107345645132251138" "002" 
+py .\scripts\linkedin-quotes.py "urn:li:share:7105527122726699008" "003" 
+py .\scripts\linkedin-quotes.py "urn:li:share:6966754218011504640" "004" 
+py .\scripts\linkedin-quotes.py "urn:li:ugcPost:71074517839746457" "005" 
+py .\scripts\linkedin-quotes.py "urn:li:share:7108659246350639104" "006" 
+py .\scripts\linkedin-quotes.py "urn:li:share:7110123670982860801" "007" 
+pause 
